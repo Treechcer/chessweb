@@ -1,0 +1,38 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.even{
+    background-color: black;
+    margin-right: -4px;
+    margin-top: -4px;
+    color:white;
+}
+
+.odd{
+    color:black;
+    background-color: white;
+    margin-right: -4px;
+    margin-top: -4px;
+}
+
+button{
+    width: 50px;
+    height: 50px;
+    border-radius: 0;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.row{
+    display: flex;
+}
