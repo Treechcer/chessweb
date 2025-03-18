@@ -60,10 +60,8 @@ function reset(){
 function movePieces(ID){
     let i = Math.floor((ID - 1) / 8);
     let j = (ID - 1) % 8;
-    //document.writeln(checkValidPiece(board[i][j]).team, " ", checkValidPiece(board[i][j]).piece, " ", checkValidPiece(board[i][j]).found)
     let objOfClickedPiece = checkValidPiece(board[i][j])
-    document.writeln(coloredPieceToNocoloredPiece(objOfClickedPiece.piece))
-
+    moves(coloredPieceToNocoloredPiece(objOfClickedPiece.piece), {i, j, ID})
 }
 
 function checkValidPiece(piece){
@@ -87,7 +85,7 @@ function coloredPieceToNocoloredPiece(pieceString){
     var stringToReturn = "";
     for (let i = 0; i < pieceString.length; i++){
         if (pieceString[i] == " "){
-            indexSave = i;
+            indexSave = i+1;
         }
     }
 
@@ -96,6 +94,16 @@ function coloredPieceToNocoloredPiece(pieceString){
     }
 
     return stringToReturn;
+}
+
+function moves(pieceToMove, position){
+    if (pieceToMove == "pawn"){
+        if (board[position.i][position.j] == "white pawn" && position.i == 1){
+            for (let i = 1; i < 3; i++){
+                document.getElementById(Number(position.ID) + (8 * i)).style.backgroundColor = "lightgreen";
+            }
+        }
+    }
 }
 
 boardDraw()
