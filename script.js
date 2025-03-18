@@ -83,18 +83,19 @@ function checkValidPiece(piece){
 }
 
 function coloredPieceToNocoloredPiece(pieceString){
-
-    // I hate to say it, but I asked GPT to do it, I have no idea of how else to do it ngl
-
-    const colors = ["white", "black"];
-    
-    for (let color of colors) {
-        if (pieceString.toLowerCase().startsWith(color)) {
-        return pieceString.slice(color.length).trim();
+    var indexSave = 0;
+    var stringToReturn = "";
+    for (let i = 0; i < pieceString.length; i++){
+        if (pieceString[i] == " "){
+            indexSave = i;
         }
     }
-    
-    return pieceString; 
+
+    for (let i = indexSave; i < pieceString.length; i++){
+        stringToReturn += pieceString[i];
+    }
+
+    return stringToReturn;
 }
 
 boardDraw()
