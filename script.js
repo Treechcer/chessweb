@@ -9,6 +9,8 @@ var board = [
     ["black rook","black knight","black bishop","black queen","black king","black bishop","black knight","black rook"]
 ]
 
+var possibleMovesNow = []
+
 var noColPieces = [
     "pawn", "rook", "knight",
     "bishop", "queen", "king"
@@ -101,6 +103,7 @@ function moves(pieceToMove, position){
         if (board[position.i][position.j] == "white pawn" && position.i == 1){
             for (let i = 1; i < 3; i++){
                 document.getElementById(Number(position.ID) + (8 * i)).style.backgroundColor = "lightgreen";
+                possibleMovesNow += [[position.i,position.j]]
             }
         }
     }
