@@ -3,7 +3,7 @@ var board = [
     ["white pawn","white pawn","white pawn","white pawn","white pawn","white pawn","white pawn","white pawn"],
     ["","","","","","","",""],
     ["","","","","","","",""],
-    ["","","","","","","",""],
+    ["","","","","white pawn","","",""],
     ["","","","","","","",""],
     ["black pawn","black pawn","black pawn","black pawn","black pawn","black pawn","black pawn","black pawn"],
     ["black rook","black knight","black bishop","black queen","black king","black bishop","black knight","black rook"]
@@ -63,7 +63,15 @@ function movePieces(ID){
     let i = Math.floor((ID - 1) / 8);
     let j = (ID - 1) % 8;
     let objOfClickedPiece = checkValidPiece(board[i][j])
-    moves(coloredPieceToNocoloredPiece(objOfClickedPiece.piece), {i, j, ID})
+    objOfClickedPiece.position = {i, j, ID}
+    if (possibleMovesNow != null){
+        for (i of possibleMovesNow){
+            let tempID = i[0] * 8 + i[1] + 1; 
+            console.log(possibleMovesNow)
+            //document.getElementById(tempID).style.color = "red"
+        }
+    }
+    moves(coloredPieceToNocoloredPiece(objOfClickedPiece.piece), {i : i, j : j, ID : ID})
 }
 
 function checkValidPiece(piece){
@@ -99,12 +107,18 @@ function coloredPieceToNocoloredPiece(pieceString){
 }
 
 function moves(pieceToMove, position){
+    var indexCounter = 0;
     if (pieceToMove == "pawn"){
         if (board[position.i][position.j] == "white pawn" && position.i == 1){
             for (let i = 1; i < 3; i++){
                 document.getElementById(Number(position.ID) + (8 * i)).style.backgroundColor = "lightgreen";
-                possibleMovesNow += [[position.i,position.j]]
+                possibleMovesNow[indexCounter] = [position.i+i,position.j]
+                indexCounter++
             }
+        }
+        else if (board[position.i][position.j] == "white pawn"){
+            document.getElementById(Number(position.ID) + (8 * 1)).style.backgroundColor = "lightgreen";
+            possibleMovesNow += [position.i,position.j]
         }
     }
 }
