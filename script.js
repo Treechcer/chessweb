@@ -123,4 +123,5 @@ function moves(pieceToMove, position){
     }
 }
 
+
 boardDraw()
