@@ -9,7 +9,16 @@ var board = [
     ["black rook","black knight","black bishop","black queen","black king","black bishop","black knight","black rook"]
 ]
 
+var players = {
+    nowPlays : whitePieces,
+    wasPlayed : false,
+    lastID : 0,
+    piece : "",
+}
+
 var possibleMovesNow = []
+
+var possibleMovesID = []
 
 var noColPieces = [
     "pawn", "rook", "knight",
@@ -30,12 +39,15 @@ var blackPieces = [
 
 function boardDraw(){
     reset()
+    let mis = 0;
     for (let i = 0; i < 8; i++){
         for (let j = 0; j < 8; j++){
             let ID = i * 8 + j + 1; 
             document.getElementById(ID).textContent = board[i][j]
             document.getElementById(ID).style.color = checkTeam(board[i][j])
+            document.getElementById(ID).style.backgroundColor = (ID + mis) % 2 == 1 ? "white" : "gray"
         }
+        mis++
     }
 }
 
@@ -60,18 +72,48 @@ function reset(){
 }
 
 function movePieces(ID){
+    if (players.wasPlayed && ID != players.lastID){
+        let mis = 0;
+        for (let i = 0; i < 8; i++){
+            for (let j = 0; j < 8; j++){
+                let ID = i * 8 + j + 1;
+                document.getElementById(ID).style.backgroundColor = (ID + mis) % 2 == 1 ? "white" : "gray"
+            }
+            mis++
+        }
+        players.wasPlayed = false;
+    }
+
+    for (let i = 0; i < possibleMovesID.length; i++){
+        if (players.wasPlayed && ID == possibleMovesID[i]){
+            let i = Math.floor((players.lastID - 1) / 8);
+            let j = (players.lastID - 1) % 8;
+            board[i][j] = ""
+        }
+    }
+
     let i = Math.floor((ID - 1) / 8);
     let j = (ID - 1) % 8;
     let objOfClickedPiece = checkValidPiece(board[i][j])
     objOfClickedPiece.position = {i, j, ID}
     if (possibleMovesNow != null){
-        for (i of possibleMovesNow){
-            let tempID = i[0] * 8 + i[1] + 1; 
+        for (p of possibleMovesNow){
+            let tempID = p[0] * 8 + p[1] + 1; 
             console.log(possibleMovesNow)
-            //document.getElementById(tempID).style.color = "red"
+            document.getElementById(tempID).style.color = "red"
         }
     }
-    moves(coloredPieceToNocoloredPiece(objOfClickedPiece.piece), {i : i, j : j, ID : ID})
+
+    position = {
+        i : i,
+        j : j,
+        ID : ID
+    }
+
+    moves(coloredPieceToNocoloredPiece(objOfClickedPiece.piece), position)
+    
+
+    console.log(players.wasPlayed)
 }
 
 function checkValidPiece(piece){
@@ -113,13 +155,20 @@ function moves(pieceToMove, position){
             for (let i = 1; i < 3; i++){
                 document.getElementById(Number(position.ID) + (8 * i)).style.backgroundColor = "lightgreen";
                 possibleMovesNow[indexCounter] = [position.i+i,position.j]
+                let ID = i * 8 + j + 1;
+                possibleMovesID[indexCounter] = ID
                 indexCounter++
             }
         }
         else if (board[position.i][position.j] == "white pawn"){
             document.getElementById(Number(position.ID) + (8 * 1)).style.backgroundColor = "lightgreen";
-            possibleMovesNow += [position.i,position.j]
+            possibleMovesNow[indexCounter] = [position.i+1,position.j]
+            let ID = i * 8 + j + 1;
+            possibleMovesID[indexCounter] = ID
         }
+        players.wasPlayed = true
+        players.lastID = position.ID
+        players.piece = "pawn"
     }
 }
 
