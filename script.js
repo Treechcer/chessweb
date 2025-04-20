@@ -109,8 +109,8 @@ function movePieces(ID){
         j : j,
         ID : ID
     }
-
-    moves(coloredPieceToNocoloredPiece(objOfClickedPiece.piece), position)
+    
+    possibleMovesID = moves(coloredPieceToNocoloredPiece(objOfClickedPiece.piece), position)
     
 
     console.log(players.wasPlayed)
@@ -152,24 +152,26 @@ function moves(pieceToMove, position){
     var indexCounter = 0;
     if (pieceToMove == "pawn"){
         if (board[position.i][position.j] == "white pawn" && position.i == 1){
-            for (let i = 1; i < 3; i++){
+            for (let i = 1; i <= 2; i++){
                 document.getElementById(Number(position.ID) + (8 * i)).style.backgroundColor = "lightgreen";
                 possibleMovesNow[indexCounter] = [position.i+i,position.j]
-                let ID = i * 8 + j + 1;
+                let ID = i * 8 + position.j + 1;
                 possibleMovesID[indexCounter] = ID
                 indexCounter++
             }
         }
-        else if (board[position.i][position.j] == "white pawn"){
+        else if (board[position.i][position.j] == "white pawn" && position.i != 1){
             document.getElementById(Number(position.ID) + (8 * 1)).style.backgroundColor = "lightgreen";
             possibleMovesNow[indexCounter] = [position.i+1,position.j]
-            let ID = i * 8 + j + 1;
+            let ID = i * 8 + position.j + 1;
             possibleMovesID[indexCounter] = ID
         }
         players.wasPlayed = true
         players.lastID = position.ID
         players.piece = "pawn"
     }
+
+    return possibleMovesID;
 }
 
 boardDraw()
